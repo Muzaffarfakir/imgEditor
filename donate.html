@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Donate</title>
+
+  <!-- HTML -->
+
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-size: 15pt;
+      background: linear-gradient(#B2E1FF,#B2F8FF);
+      height: 100vh;
+
+    }
+
+    input {
+      margin-top: 40px;
+      text-align: center;
+      width: 100%;
+      height: 32px;
+      margin: center;
+      border: 1px solid black;
+      border-radius: 6px;
+      outline-color: #AFB6FF;
+    }
+
+    #paypal-button-container {
+      margin-top: 40px;
+      text-align: center;
+
+
+    }
+
+    h3 {
+      text-align: center;
+    }
+
+    h4 {
+      text-align: center;
+    }
+
+    h6 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Project -->
+  <h3>Donate please</h3>
+  <input type="number" id="amount">
+  <div id="smart-button-container">
+    <div style="text-align: center;">
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+  <h4>
+    Hi Guys This is easy or instant Image Editor.  Plzz support us by donate some amount  , its help us to work on it and make it better. 
+  </h4>
+    <script src="https://www.paypal.com/sdk/js?client-id=AdMkuYhVaodSO9sWZ7p1xqTRTsgI937-HEDz211SHNgOAcCKTLEH08rcKQlkA-1uRexv5G_bR5k0ZjC6&enable-funding=venmo&currency=USD" data-sdk-integration-source="button-factory"></script>
+    <script>
+      let amount = document.getElementById("amount")
+
+      function initPayPalButton() {
+        paypal.Buttons({
+          style: {
+            shape: 'pill',
+            color: 'silver',
+            layout: 'vertical',
+            label: 'paypal',
+
+          },
+
+          createOrder: function(data, actions) {
+            return actions.order.create({
+              purchase_units: [{ "amount": { "currency_code": "USD", "value": amount.value } }]
+            });
+          },
+
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+
+              // Full available details
+              console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+              // Show a success message within this page, e.g.
+              const element = document.getElementById('paypal-button-container');
+              element.innerHTML = '';
+              element.innerHTML = '<h3>Thank you for your payment!</h3>';
+
+              // Or go to another URL:  actions.redirect('thank_you.html');
+
+            });
+          },
+
+          onError: function(err) {
+            console.log(err);
+          }
+        }).render('#paypal-button-container');
+      }
+      initPayPalButton();
+    </script>
+</body>
+
+</html>
